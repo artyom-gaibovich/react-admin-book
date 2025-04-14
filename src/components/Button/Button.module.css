@@ -1,0 +1,19 @@
+
+.button {
+    border-radius: 6px;
+    padding: 8px 30px;
+    font-size: 16px;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    color: var(--white-color);
+    width: 25%;
+    transition: background 0.25s;
+}
+.accenet:hover {
+    background: var(--primary-hover-color);
+}
+.accenet {
+    background: var(--primary-color);
+}

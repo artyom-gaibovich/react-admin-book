@@ -1,0 +1,15 @@
+.input {
+    display: block;
+    background: none;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    font-family: 'Source Sans 3', sans-serif;
+    border: 1px solid var(--separator-color);
+    width: 100%;
+}
+
+.input-title {
+    font-size: 32px;
+}
