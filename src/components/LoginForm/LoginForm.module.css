@@ -1,12 +1,12 @@
 .container {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 30px;
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 30px;
 }
 
 .form-label {
-    color: var(--text-secondary-color);
+	color: var(--text-secondary-color);
 }
 .login-form {
-    width: 25%;
+	width: 25%;
 }

@@ -5,18 +5,19 @@ import Heading from '../../components/Heading/Heading.tsx';
 import { ProjectCard } from '../../components/ProjectCard/ProjectCard.tsx';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import Product from '../Project/Product.tsx';
 
-interface Product {
+export interface IProject {
 	id: string;
 	title: string;
-	description: string;
+	body: string;
 }
 
-export function Menu() {
-	const [products, setProducts] = useState<Product[]>([]);
+export default function Menu() {
+	const [products, setProducts] = useState<IProject[]>([]);
 
-	const getMenuOld = () =>
+	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [error, setError] = useState<string | undefined>();
+	const getMenuO = () =>
 		new Promise((resolve) =>
 			setTimeout(
 				() =>
@@ -42,18 +43,30 @@ export function Menu() {
 			),
 		)
 			.then((res) => {
-				setProducts(res as Product[]);
+				setIsLoading(true);
+				setProducts(res as IProject[]);
 			})
 			.catch((err) => console.log(err));
 
-	const getMenu = () =>
-		axios
-			.get<Product[]>(`https://fakestoreapi.com/products`)
-			.then(({ data }) => setProducts(data))
-			.catch((err) => console.error(err));
+	console.log(getMenuO);
 
+	const getMenu = () => {
+		setIsLoading(true);
+		return axios
+			.get<IProject[]>(`https://jsonplaceholder.typicode.com/posts`)
+			.then(({ data }) => {
+				console.log(data);
+				setProducts(data);
+				setIsLoading(false);
+			})
+			.catch((err) => {
+				console.error(err);
+				setError(err.message);
+				setIsLoading(false);
+			});
+	};
 	useEffect(() => {
-		getMenu().then((r) => console.log(r));
+		getMenu().then(() => console.log('res'));
 	}, []);
 
 	return (
@@ -66,21 +79,23 @@ export function Menu() {
 					<Search placeholder="Введите наименование проекта" />
 				</div>
 				<div className={cn(styles['menu-content'])}>
-					{products.map((product) => (
-						<ProjectCard
-							id={product.id}
-							title={product.title}
-							description={product.description}
-							techStack={[
-								{
-									icon: '',
-									name: 'PostgreSQL',
-								},
-							]}
-						/>
-					))}
-
-					<ProjectCard
+					{error && <>{error}</>}
+					{!isLoading &&
+						products.map((product) => (
+							<ProjectCard
+								id={product.id}
+								title={product.title}
+								description={product.body}
+								techStack={[
+									{
+										icon: '',
+										name: 'PostgreSQL',
+									},
+								]}
+							/>
+						))}
+					{isLoading && <div>Идет загрузка продуктов</div>}
+					{/*	<ProjectCard
 						id={'1'}
 						title={'Битра'}
 						description="Bitrix Framework - технологическое ядро (платформа) для создания и управления проектами (веб-сайтами и корпоративными порталами)."
@@ -117,7 +132,7 @@ export function Menu() {
 								name: 'JavaScript',
 							},
 						]}
-					></ProjectCard>
+					></ProjectCard>*/}
 				</div>
 			</div>
 		</>

@@ -1,19 +1,17 @@
 .card {
-    flex: 1 1 calc(10% - 16px);
-    box-sizing: border-box;
-    min-width: 100px;
-    background: #f0f0f0;
-    padding: 16px;
-    width: 450px;
-    height: auto;
-    border-radius: 8px;
+	flex: 1 1 calc(10% - 16px);
+	box-sizing: border-box;
+	min-width: 100px;
+	background: #f0f0f0;
+	padding: 16px;
+	width: 450px;
+	height: auto;
+	border-radius: 8px;
 }
 
-
-
 .link {
-    display: flex;
-    text-decoration: none;
-    gap: 10px;
-    color: var(--text-color);
+	display: flex;
+	text-decoration: none;
+	gap: 10px;
+	color: var(--text-color);
 }

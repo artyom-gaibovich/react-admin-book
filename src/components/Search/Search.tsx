@@ -5,7 +5,7 @@ import styles from './Search.module.css';
 import cn from 'classnames';
 
 const Search = forwardRef<HTMLInputElement, SearchProps>(function MyInput(
-	{ children, className, isValid, ...props }: SearchProps,
+	{ className, isValid, ...props }: SearchProps,
 	ref,
 ) {
 	return (

@@ -1,7 +1,8 @@
+/*
 import './App.module.css';
 import styles from './App.module.css';
 import axios from 'axios';
-import { useState, MouseEvent, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import LoginForm from './components/LoginForm/LoginForm.tsx';
 import cn from 'classnames';
 
@@ -30,7 +31,7 @@ interface VideoResponse {
 }
 
 function App() {
-	const [videosStats, setVideosStats] = useState<VideoItem[]>([]);
+/!*	const [videosStats, setVideosStats] = useState<VideoItem[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 
@@ -42,7 +43,7 @@ function App() {
 			)
 			.then(({ data }) => {
 				const videos = data.items.map((el: { id: { videoId: string } }) => el.id.videoId);
-				const promises = videos.map((videoId) =>
+				const promises = videos.map((videoId: string) =>
 					axios.get<VideoResponse>(
 						`https://www.googleapis.com/youtube/v3/videos?key=AIzaSyD286cPiFfjYicmHRiy_g2VXw51BBgCCxU&id=${videoId}&part=statistics`,
 					),
@@ -66,10 +67,6 @@ function App() {
 				console.error('Error searching videos:', error);
 			});
 	}, []);
-
-	const addCounter = (e: MouseEvent) => {
-		console.log(e);
-	};
 
 	return (
 		<div className={cn(styles['app'])}>
@@ -109,7 +106,8 @@ function App() {
 				</table>
 			)}
 		</div>
-	);
+	);*!/
 }
 
 export default App;
+*/

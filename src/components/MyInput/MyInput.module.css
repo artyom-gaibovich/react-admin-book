@@ -1,15 +1,15 @@
 .input {
-    font-size: 17px;
-    font-style: normal;
-    font-weight: 400;
-    color: var(--text-color);
-    box-shadow: 15px 20px 45px 0px rgb(233, 233, 233, 0.25);
-    padding: 10px 40px 10px 15px;
-    font-family: 'Source Sans 3', sans-serif;
-    border: 1px solid var(--separator-color);
-    width: 100%;
-    border-radius: 4px;
-    box-sizing: border-box;
+	font-size: 17px;
+	font-style: normal;
+	font-weight: 400;
+	color: var(--text-color);
+	box-shadow: 15px 20px 45px 0px rgb(233, 233, 233, 0.25);
+	padding: 10px 40px 10px 15px;
+	font-family: 'Source Sans 3', sans-serif;
+	border: 1px solid var(--separator-color);
+	width: 100%;
+	border-radius: 4px;
+	box-sizing: border-box;
 }
 
 /*
@@ -24,8 +24,6 @@
 
 */
 
-
-
 .input-title {
-    font-size: 32px;
+	font-size: 32px;
 }

@@ -3,18 +3,15 @@
 	min-height: 100vh;
 }
 
-
 .menu {
 	display: flex;
 	flex-direction: column;
-	gap: 30px
-
+	gap: 30px;
 }
 
 .menu img {
 	width: 2em;
 }
-
 
 .sidebar {
 	border-right: 1px solid var(--separator-color);
@@ -38,7 +35,6 @@
 	color: var(--text-color);
 }
 
-
 .active {
 	color: var(--primary-color);
 }
@@ -49,7 +45,6 @@
 
 .name {
 	font-size: 24px;
-
 }
 
 .email {

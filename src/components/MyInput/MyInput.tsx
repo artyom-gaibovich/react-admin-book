@@ -5,7 +5,7 @@ import styles from './MyInput.module.css';
 import cn from 'classnames';
 
 const MyInput = forwardRef<HTMLInputElement, MyInputProps>(function MyInput(
-	{ children, className, isValid, ...props }: MyInputProps,
+	{ className, isValid, ...props }: MyInputProps,
 	ref,
 ) {
 	return (

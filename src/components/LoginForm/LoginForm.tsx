@@ -1,9 +1,10 @@
-import { act, useReducer, useRef } from 'react';
+import { FormEvent, useReducer, useRef } from 'react';
 import MyInput from '../MyInput/MyInput.tsx';
 import styles from './LoginForm.module.css';
 import cn from 'classnames';
 import Button from '../Button/Button.tsx';
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const INITIAL_STATE: ILoginFormState = {
 	isValid: {
 		password: true,
@@ -34,6 +35,7 @@ type ActionType =
 	| { type: 'SET_FORM'; payload: { name: string; value: string } }
 	| { type: 'RESET_FORM'; payload: ILoginFormState };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function formReducer(state: ILoginFormState, action: ActionType) {
 	switch (action.type) {
 		case 'RESET_FORM': {
@@ -81,7 +83,7 @@ export default function LoginForm() {
 	const ref = useRef<HTMLInputElement>(null);
 	const [state, dispatch] = useReducer(formReducer, { ...INITIAL_STATE });
 
-	const inputChange = (e) => {
+	const inputChange = (e: { target: { name: string; value: string } }) => {
 		const { name, value } = e.target;
 		dispatch({
 			type: 'SET_FORM',
@@ -92,7 +94,8 @@ export default function LoginForm() {
 		});
 	};
 
-	const submitLogin = (e) => {
+	console.log(state);
+	const submitLogin = (e: FormEvent) => {
 		e.preventDefault();
 		dispatch({ type: 'SUBMIT' });
 	};
