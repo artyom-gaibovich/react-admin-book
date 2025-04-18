@@ -1,6 +1,5 @@
 .menu {
     padding: 45px;
-    min-width: 160vh;
 }
 
 
@@ -12,3 +11,9 @@
     justify-content: space-between;
 }
 
+
+.menu-content {
+    display: flex;
+    gap: 100px;
+    flex-wrap: wrap;
+}

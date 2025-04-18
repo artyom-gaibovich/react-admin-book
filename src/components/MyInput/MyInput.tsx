@@ -1,21 +1,22 @@
-import {forwardRef} from 'react';
-import {MyInputProps} from "./MyInput.props.ts";
-import styles from './MyInput.module.css'
+import { forwardRef } from 'react';
+import { MyInputProps } from './MyInput.props.ts';
+import styles from './MyInput.module.css';
 
-import cn from "classnames";
+import cn from 'classnames';
 
-const MyInput = forwardRef<HTMLInputElement, MyInputProps>(function MyInput({
-                                                                                children,
-                                                                                className,
-                                                                                isValid,
-                                                                                ...props
-                                                                            }: MyInputProps, ref) {
-    return (
-        <input {...props} className={cn(className, styles['input'], {
-            [styles['invalid']]: isValid,
-        })} ref={ref}/>
-
-    );
+const MyInput = forwardRef<HTMLInputElement, MyInputProps>(function MyInput(
+	{ children, className, isValid, ...props }: MyInputProps,
+	ref,
+) {
+	return (
+		<input
+			{...props}
+			className={cn(className, styles['input'], {
+				[styles['invalid']]: isValid,
+			})}
+			ref={ref}
+		/>
+	);
 });
 
 export default MyInput;
