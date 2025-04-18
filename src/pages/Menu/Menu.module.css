@@ -1,0 +1,31 @@
+.menu {
+    padding: 45px;
+    min-width: 160vh;
+}
+
+
+
+.input-search-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+
+}
+
+
+.menu-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.search-icon {
+    position: absolute;
+    left: 8px;
+    top: 50%        ;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    pointer-events: none;
+    opacity: 0.6;
+}

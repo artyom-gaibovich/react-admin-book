@@ -1,4 +1,4 @@
-import { Link, Outlet } from 'react-router-dom';
+import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 import cn from 'classnames';
 import styles from './Layout.module.css';
 
@@ -17,21 +17,33 @@ export function Layout() {
 						<div className={cn(styles['email'])}>artyomguybov2002@gmail.com</div>
 					</div>
 					<div className={styles['menu']}>
-						<Link to="/" className={cn(styles['link'])}>
+						<NavLink
+							to="/"
+							className={({ isActive }) =>
+								cn(styles['link'], {
+									[styles['active']]: isActive,
+								})
+							}
+						>
 							<img src="/menu.svg" alt="Иконка меню не загружена" />
 							Меню
-						</Link>
-						<Link to="/cart" className={cn(styles['link'])}>
+						</NavLink>
+						<NavLink
+							to="/cart"
+							className={({ isActive }) =>
+								cn(styles['link'], {
+									[styles['active']]: isActive,
+								})
+							}
+						>
 							<img src="/cart.svg" alt="Иконка карзины не загружено" />
 							Корзина
-						</Link>
+						</NavLink>
 					</div>
 				</div>
-				<div className={cn(styles['content'])}></div>
-			</div>
-
-			<div>
-				<Outlet />
+				<div>
+					<Outlet />
+				</div>
 			</div>
 		</div>
 	);
