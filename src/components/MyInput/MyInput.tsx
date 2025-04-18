@@ -4,10 +4,16 @@ import styles from './MyInput.module.css'
 
 import cn from "classnames";
 
-const MyInput = forwardRef<HTMLInputElement, MyInputProps>(function MyInput({children, ...props}: MyInputProps, ref) {
-    const {...otherProps} = props;
+const MyInput = forwardRef<HTMLInputElement, MyInputProps>(function MyInput({
+                                                                                children,
+                                                                                className,
+                                                                                isValid,
+                                                                                ...props
+                                                                            }: MyInputProps, ref) {
     return (
-        <input {...otherProps} className={cn(styles['input'])} ref={ref}/>
+        <input {...props} className={cn(className, styles['input'], {
+            [styles['invalid']]: isValid,
+        })} ref={ref}/>
 
     );
 });
