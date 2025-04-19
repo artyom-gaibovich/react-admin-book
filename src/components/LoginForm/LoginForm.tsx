@@ -1,87 +1,45 @@
-import { FormEvent, useReducer, useRef } from 'react';
+import { FormEvent, useReducer, useRef, useState } from 'react';
 import MyInput from '../MyInput/MyInput.tsx';
 import styles from './LoginForm.module.css';
 import cn from 'classnames';
 import Button from '../Button/Button.tsx';
+import { formReducer, INITIAL_STATE } from './LoginForm.state.ts';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-// eslint-disable-next-line react-refresh/only-export-components
-export const INITIAL_STATE: ILoginFormState = {
-	isValid: {
-		password: true,
-		email: true,
-	},
-	values: {
-		password: '',
-		email: '',
-	},
-	isFormReadyToSubmit: false,
+export type LoginForm = {
+	email: {
+		value: string;
+	};
+	password: {
+		value: string;
+	};
 };
 
-interface ILoginFormState {
-	isValid: {
-		password: boolean;
-		email: boolean;
-	};
-	values: {
-		password: string;
-		email: string;
-	};
-	isFormReadyToSubmit: boolean;
-}
-
-type ActionType =
-	| { type: 'SUBMIT' }
-	| { type: 'RESET_VALIDITY'; payload: ILoginFormState }
-	| { type: 'SET_FORM'; payload: { name: string; value: string } }
-	| { type: 'RESET_FORM'; payload: ILoginFormState };
-
-// eslint-disable-next-line react-refresh/only-export-components
-export function formReducer(state: ILoginFormState, action: ActionType) {
-	switch (action.type) {
-		case 'RESET_FORM': {
-			return {
-				...state,
-				values: INITIAL_STATE.values,
-				isFormReadyToSubmit: false,
-			};
-		}
-		case 'RESET_VALIDITY': {
-			return {
-				...state,
-				isValid: INITIAL_STATE.isValid,
-			};
-		}
-		case 'SUBMIT': {
-			const passwordIsValid = state.values.password?.trim().length > 0;
-			const emailIsValid = state.values.email?.trim().length > 0;
-			return {
-				...state,
-				isValid: {
-					password: passwordIsValid,
-					email: emailIsValid,
-				},
-				isFormReadyToSubmit: passwordIsValid && emailIsValid,
-			};
-		}
-		case 'SET_FORM': {
-			const { name, value } = action.payload as { name: 'password' | 'email'; value: string };
-			const propToChange = { ...state.values };
-			propToChange[name] = value;
-			return {
-				...state,
-				values: {
-					...propToChange,
-				},
-			};
-		}
-		default:
-			throw new Error(`Unrecognized action type`);
-	}
-}
-
 export default function LoginForm() {
+	const [error, setError] = useState<string | null>();
+
 	const ref = useRef<HTMLInputElement>(null);
-	const [state, dispatch] = useReducer(formReducer, { ...INITIAL_STATE });
+	const [formState, dispatch] = useReducer(formReducer, { ...INITIAL_STATE });
+
+	const navigate = useNavigate();
+	//const { isValid, isFormReadyToSubmit, values } = formState;
+
+	const sendLogin = (email: string, password: string) => {
+		return axios
+			.post<{ accessToken: string }>(`https://dummyjson.com/auth/login`, {
+				username: email.replace('@mail.ru', ''),
+				password: password,
+			})
+			.then(({ data }) => {
+				localStorage.setItem(`jwt`, data.accessToken);
+				navigate('/');
+			})
+			.catch((err) => {
+				console.log(err);
+				setError(err.response?.data.message);
+			});
+	};
 
 	const inputChange = (e: { target: { name: string; value: string } }) => {
 		const { name, value } = e.target;
@@ -94,31 +52,44 @@ export default function LoginForm() {
 		});
 	};
 
-	console.log(state);
 	const submitLogin = (e: FormEvent) => {
 		e.preventDefault();
-		dispatch({ type: 'SUBMIT' });
+		setError(null);
+		const target = e.target as typeof e.target & LoginForm;
+		const { email, password } = target;
+		sendLogin(email.value, password.value).then(() => {
+			dispatch({ type: 'SUBMIT' });
+		});
 	};
 
 	return (
-		<form onSubmit={submitLogin} className={cn(styles['login-form'])}>
-			<div className={cn(styles['container'])}>
-				<div className={cn(styles['flex-element'])}>
-					<label className={cn(styles['form-label'])}>Ваш email</label>
-					<MyInput type="email" ref={ref} name="email" placeholder="Email" onChange={inputChange} />
+		<div>
+			{error && <div className={cn(styles['error'])}>{error}</div>}
+			<form onSubmit={submitLogin} className={cn(styles['login-form'])}>
+				<div className={cn(styles['container'])}>
+					<div className={cn(styles['flex-element'])}>
+						<label className={cn(styles['form-label'])}>Ваш email</label>
+						<MyInput
+							type="email"
+							ref={ref}
+							name="email"
+							placeholder="Email"
+							onChange={inputChange}
+						/>
+					</div>
+					<div className={cn(styles['flex-element'])}>
+						<label className={cn(styles['form-label'])}>Ваш пароль</label>
+						<MyInput
+							type="password"
+							name="password"
+							ref={ref}
+							placeholder="Пароль"
+							onChange={inputChange}
+						/>
+					</div>
 				</div>
-				<div className={cn(styles['flex-element'])}>
-					<label className={cn(styles['form-label'])}>Ваш пароль</label>
-					<MyInput
-						type="password"
-						name="password"
-						ref={ref}
-						placeholder="Пароль"
-						onChange={inputChange}
-					/>
-				</div>
-			</div>
-			<Button appearance={'big'}>Сохранить</Button>
-		</form>
+				<Button appearance={'big'}>Войти</Button>
+			</form>
+		</div>
 	);
 }

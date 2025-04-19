@@ -1,8 +1,15 @@
-import { NavLink, Outlet } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import cn from 'classnames';
 import styles from './Layout.module.css';
+import Button from '../components/Button/Button.tsx';
 
 export function Layout() {
+	const navigate = useNavigate();
+	const logout = () => {
+		localStorage.removeItem('jwt');
+		navigate('/auth/login');
+	};
+
 	return (
 		<div>
 			<div className={cn(styles['layout'])}>
@@ -39,8 +46,12 @@ export function Layout() {
 							<img src="/cart.svg" alt="Иконка карзины не загружено" />
 							Корзина
 						</NavLink>
+						<Button className={cn(styles['last-item'])} appearance={'big'} onClick={logout}>
+							Выход
+						</Button>
 					</div>
 				</div>
+
 				<div>
 					<Outlet />
 				</div>

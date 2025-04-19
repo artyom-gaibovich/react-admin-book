@@ -9,6 +9,11 @@
 	gap: 30px;
 }
 
+
+.last-item {
+	margin-top: 100%;
+}
+
 .menu img {
 	width: 2em;
 }

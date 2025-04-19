@@ -1,0 +1,22 @@
+.logo {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    max-width: 50%;
+}
+
+.content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-left: 1px solid var(--separator-color);
+    flex: 1
+}
+
+
+.layout {
+    min-height: 100vh;
+    display: flex;
+}

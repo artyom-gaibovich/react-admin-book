@@ -11,7 +11,7 @@ function Button({ children, className, appearance, ...props }: ButtonProps) {
 			})}
 			{...props}
 		>
-			{children}
+			<div className={cn(styles['last-item'])}>{children}</div>
 		</button>
 	);
 }
