@@ -6,6 +6,9 @@ import Button from '../Button/Button.tsx';
 import { formReducer, INITIAL_STATE } from './LoginForm.state.ts';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../store/store.ts';
+import { userActions } from '../../store/user.slice.ts';
 
 export type LoginForm = {
 	email: {
@@ -20,7 +23,9 @@ export default function LoginForm() {
 	const [error, setError] = useState<string | null>();
 
 	const ref = useRef<HTMLInputElement>(null);
-	const [formState, dispatch] = useReducer(formReducer, { ...INITIAL_STATE });
+	const [formState, dispatchForm] = useReducer(formReducer, { ...INITIAL_STATE });
+
+	const dispatch = useDispatch<AppDispatch>();
 
 	const navigate = useNavigate();
 	//const { isValid, isFormReadyToSubmit, values } = formState;
@@ -32,7 +37,7 @@ export default function LoginForm() {
 				password: password,
 			})
 			.then(({ data }) => {
-				localStorage.setItem(`jwt`, data.accessToken);
+				dispatch(userActions.addJwt(data.accessToken));
 				navigate('/');
 			})
 			.catch((err) => {
@@ -43,7 +48,7 @@ export default function LoginForm() {
 
 	const inputChange = (e: { target: { name: string; value: string } }) => {
 		const { name, value } = e.target;
-		dispatch({
+		dispatchForm({
 			type: 'SET_FORM',
 			payload: {
 				name: name,
@@ -58,7 +63,7 @@ export default function LoginForm() {
 		const target = e.target as typeof e.target & LoginForm;
 		const { email, password } = target;
 		sendLogin(email.value, password.value).then(() => {
-			dispatch({ type: 'SUBMIT' });
+			dispatchForm({ type: 'SUBMIT' });
 		});
 	};
 
