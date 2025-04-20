@@ -14,6 +14,7 @@ export function ProjectCard({
 	description,
 	techStack,
 	children,
+	price,
 	isLoading = false,
 	className,
 	...props
@@ -38,6 +39,7 @@ export function ProjectCard({
 					</button>
 					<div className={cn(styles['title'])}>{title}</div>
 					<p className={cn(styles['description'])}>{description}</p>
+					<div className={cn(styles['price'])}>{price}</div>
 					<ProjectTechStack items={techStack} className={cn(styles.techSection)} />
 					{children}
 				</div>

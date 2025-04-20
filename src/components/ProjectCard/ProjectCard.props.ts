@@ -7,6 +7,7 @@ export interface TechItem {
 
 export interface ProjectCardProps extends HTMLAttributes<HTMLDivElement> {
 	id: string;
+	price: number;
 	title: string;
 	description: string;
 	techStack: TechItem[];

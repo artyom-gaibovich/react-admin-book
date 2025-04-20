@@ -72,7 +72,8 @@ export function Layout() {
 							}
 						>
 							<img src="/cart.svg" alt="Иконка карзины не загружено" />
-							{items.reduce((acc, item) => (acc += item.count), 0)}
+							Корзина
+							<div>{items.reduce((acc, item) => (acc += item.count), 0)}</div>
 						</NavLink>
 						<Button className={cn(styles['last-item'])} appearance={'big'} onClick={logout}>
 							Выход

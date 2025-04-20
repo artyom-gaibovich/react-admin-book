@@ -3,17 +3,18 @@ import cn from 'classnames';
 import Search from '../../components/Search/Search.tsx';
 import Heading from '../../components/Heading/Heading.tsx';
 import { ProjectCard } from '../../components/ProjectCard/ProjectCard.tsx';
-import { useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import axios from 'axios';
 
 export interface IProject {
 	id: string;
-	title: string;
-	body: string;
+	name: string;
+	price: number;
 }
 
 export default function Menu() {
 	const [products, setProducts] = useState<IProject[]>([]);
+	const [search, setSearch] = useState<string>('');
 
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [error, setError] = useState<string | undefined>();
@@ -50,13 +51,16 @@ export default function Menu() {
 
 	console.log(getMenuO);
 
-	const getMenu = () => {
+	const getMenu = (name?: string) => {
 		setIsLoading(true);
 		return axios
-			.get<IProject[]>(`https://jsonplaceholder.typicode.com/posts?limit=10&offset=0`)
+			.get<IProject[]>(`https://purpleschool.ru/pizza-api-demo/products`, {
+				params: {
+					name,
+				},
+			})
 			.then(({ data }) => {
-				console.log(data);
-				setProducts(data.splice(0, 10));
+				setProducts(data);
 				setIsLoading(false);
 			})
 			.catch((err) => {
@@ -65,9 +69,14 @@ export default function Menu() {
 				setIsLoading(false);
 			});
 	};
+
 	useEffect(() => {
-		getMenu();
-	}, []);
+		getMenu(search);
+	}, [search]);
+
+	const updateFilter = (e: ChangeEvent<HTMLInputElement>) => {
+		setSearch(e.target.value);
+	};
 
 	return (
 		<>
@@ -76,7 +85,7 @@ export default function Menu() {
 					<Heading>
 						<h1>Меню</h1>
 					</Heading>
-					<Search placeholder="Введите наименование проекта" />
+					<Search placeholder="Введите наименование проекта" onChange={updateFilter} />
 				</div>
 				<div className={cn(styles['menu-content'])}>
 					{error && <>{error}</>}
@@ -84,8 +93,9 @@ export default function Menu() {
 						products.map((product) => (
 							<ProjectCard
 								id={product.id}
-								title={product.title}
-								description={product.body}
+								title={product.name}
+								price={product.price}
+								description={'Рандомный продукт'}
 								techStack={[
 									{
 										icon: '',
