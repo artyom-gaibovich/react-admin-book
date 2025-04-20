@@ -10,6 +10,11 @@
 }
 
 
+.error {
+	background: #e5362a;
+	padding: 10px;
+}
+
 .last-item {
 	margin-top: 100%;
 }

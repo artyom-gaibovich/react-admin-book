@@ -1,7 +1,7 @@
-import { lazy, StrictMode, Suspense, useDeferredValue } from 'react';
+import { lazy, StrictMode, Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
-import { createBrowserRouter, RouterProvider, Defer } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Error as ErrorPage } from './pages/Error/Error.tsx';
 import { Layout } from './layout/Layout.tsx';
 import Project from './pages/Project/Project.tsx';
@@ -52,13 +52,6 @@ const router = createBrowserRouter([
 							),
 						),
 					};
-
-					/*	return new Promise((resolve, reject) =>
-						axios
-							.get(`https://jsonplaceholder.typicode.com/posts/${params.id}`)
-							.then((data) => resolve(data))
-							.catch((err) => reject(err.message)),
-					);*/
 				},
 				errorElement: <>Возникла ошибка</>,
 			},

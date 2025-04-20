@@ -66,7 +66,7 @@ export default function Menu() {
 			});
 	};
 	useEffect(() => {
-		getMenu().then(() => console.log('res'));
+		getMenu();
 	}, []);
 
 	return (
@@ -95,44 +95,6 @@ export default function Menu() {
 							/>
 						))}
 					{isLoading && <div>Идет загрузка продуктов</div>}
-					{/*	<ProjectCard
-						id={'1'}
-						title={'Битра'}
-						description="Bitrix Framework - технологическое ядро (платформа) для создания и управления проектами (веб-сайтами и корпоративными порталами)."
-						techStack={[
-							{
-								icon: '',
-								name: 'PHP',
-							},
-							{
-								icon: '',
-								name: 'MySQL',
-							},
-							{
-								icon: '',
-								name: 'JavaScript',
-							},
-						]}
-					></ProjectCard>
-					<ProjectCard
-						id={'2'}
-						title={'Битра 2'}
-						description="Bitrix Framework - технологическое ядро (платформа) для создания и управления проектами (веб-сайтами и корпоративными порталами)."
-						techStack={[
-							{
-								icon: '',
-								name: 'Nest',
-							},
-							{
-								icon: '',
-								name: 'PostgreSQL',
-							},
-							{
-								icon: '',
-								name: 'JavaScript',
-							},
-						]}
-					></ProjectCard>*/}
 				</div>
 			</div>
 		</>

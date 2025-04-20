@@ -6,7 +6,8 @@
 }
 
 .error {
-	color: red;
+	background: #e5362a;
+	padding: 10px;
 }
 
 .form-label {
