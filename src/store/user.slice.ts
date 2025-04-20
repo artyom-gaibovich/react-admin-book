@@ -12,6 +12,7 @@ export interface UserState {
 	jwt: string | null;
 	loginState: null | 'rejected';
 	loginErrorMessage?: string;
+	registerErrorMessage?: string;
 	profile?: IUserProfile;
 	userProfileErrorMessage?: string;
 	userProfileLoadingMessage?: string;
@@ -25,6 +26,10 @@ export interface IUserProfile {
 	name: string | null;
 	phone: string | null;
 	restoreToken: string | null;
+}
+
+export interface IRegisterResponse {
+	access_token: string;
 }
 
 export const login = createAsyncThunk(
@@ -74,13 +79,30 @@ export const userProfileNew = createAsyncThunk<IUserProfile, void, { state: Root
 	},
 );
 
+export const register = createAsyncThunk(
+	'user/register',
+	(params: { email: string; password: string; name: string }) => {
+		const { name, password, email } = params;
+		return axios
+			.post<{ access_token: string }>(`https://purpleschool.ru/pizza-api-demo/auth/register`, {
+				email,
+				password,
+				name,
+			})
+			.then(({ data }) => data)
+			.catch((err) => {
+				throw new Error(err.response?.data.message);
+			});
+	},
+);
+
 const initialState: UserState = {
 	jwt: loadState<UserPersistentState>(JWT_PERSISTENT_STATE)?.jwt ?? null,
 	loginState: null,
 };
 
 export const userSlice = createSlice({
-	name: 'a',
+	name: 'user',
 	initialState,
 	reducers: {
 		logout: (state) => {
@@ -121,6 +143,20 @@ export const userSlice = createSlice({
 
 		builder.addCase(userProfileNew.pending, (state, action) => {
 			state.userProfileLoadingMessage = 'loading...';
+		});
+
+		builder.addCase(
+			register.fulfilled,
+			(state, action: PayloadAction<{ access_token: string }>) => {
+				if (!action.payload) {
+					return;
+				}
+				state.jwt = action.payload.access_token;
+			},
+		);
+
+		builder.addCase(register.rejected, (state, action) => {
+			state.registerErrorMessage = action.error.message;
 		});
 	},
 });

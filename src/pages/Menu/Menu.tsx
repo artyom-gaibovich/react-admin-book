@@ -53,7 +53,7 @@ export default function Menu() {
 	const getMenu = () => {
 		setIsLoading(true);
 		return axios
-			.get<IProject[]>(`https://jsonplacehold1er.typicode.com/posts?limit=10&offset=0`)
+			.get<IProject[]>(`https://jsonplaceholder.typicode.com/posts?limit=10&offset=0`)
 			.then(({ data }) => {
 				console.log(data);
 				setProducts(data.splice(0, 10));

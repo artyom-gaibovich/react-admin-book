@@ -12,6 +12,8 @@ export function Layout() {
 
 	const dispatch = useDispatch<AppDispatch>();
 
+	const items = useSelector((s: RootState) => s.cart.items);
+
 	const token = useSelector((state: RootState) => state.user.jwt);
 
 	const profile = useSelector((state: RootState) => state.user.profile);
@@ -70,7 +72,7 @@ export function Layout() {
 							}
 						>
 							<img src="/cart.svg" alt="Иконка карзины не загружено" />
-							Корзина
+							{items.reduce((acc, item) => (acc += item.count), 0)}
 						</NavLink>
 						<Button className={cn(styles['last-item'])} appearance={'big'} onClick={logout}>
 							Выход
