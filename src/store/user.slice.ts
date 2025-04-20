@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { loadState } from './storage.ts';
 import axios from 'axios';
+import { RootState } from './store.ts';
 
 export const JWT_PERSISTENT_STATE = 'userData';
 
@@ -56,6 +57,23 @@ export const userProfile = createAsyncThunk('user/profile', (params: { jwt: stri
 		});
 });
 
+export const userProfileNew = createAsyncThunk<IUserProfile, void, { state: RootState }>(
+	'user/profile/new',
+	(_, thunkAPI) => {
+		const jwt = thunkAPI.getState().user.jwt;
+		return axios
+			.get<IUserProfile>(`https://purpleschool.ru/pizza-api-demo/user/profile`, {
+				headers: {
+					Authorization: `Bearer ${jwt}`,
+				},
+			})
+			.then(({ data }) => data)
+			.catch((err) => {
+				throw new Error(err.response?.data.message);
+			});
+	},
+);
+
 const initialState: UserState = {
 	jwt: loadState<UserPersistentState>(JWT_PERSISTENT_STATE)?.jwt ?? null,
 	loginState: null,
@@ -89,18 +107,19 @@ export const userSlice = createSlice({
 			state.loginErrorMessage = action.error.message;
 		});
 
-		builder.addCase(userProfile.fulfilled, (state, action: PayloadAction<IUserProfile>) => {
+		builder.addCase(userProfileNew.fulfilled, (state, action: PayloadAction<IUserProfile>) => {
 			if (!action.payload) {
 				return;
 			}
 			state.profile = action.payload;
+			state.userProfileLoadingMessage = undefined;
 		});
-		builder.addCase(userProfile.rejected, (state, action) => {
+		builder.addCase(userProfileNew.rejected, (state, action) => {
 			state.userProfileErrorMessage = action.error.message;
 			state.userProfileLoadingMessage = undefined;
 		});
 
-		builder.addCase(userProfile.pending, (state, action) => {
+		builder.addCase(userProfileNew.pending, (state, action) => {
 			state.userProfileLoadingMessage = 'loading...';
 		});
 	},

@@ -4,7 +4,7 @@ import styles from './Layout.module.css';
 import Button from '../components/Button/Button.tsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../store/store.ts';
-import { userActions, userProfile } from '../store/user.slice.ts';
+import { userActions, userProfile, userProfileNew } from '../store/user.slice.ts';
 import { useEffect } from 'react';
 
 export function Layout() {
@@ -26,9 +26,9 @@ export function Layout() {
 
 	useEffect(() => {
 		if (token) {
-			dispatch(userProfile({ jwt: token }));
+			dispatch(userProfileNew());
 		}
-	}, []);
+	}, [dispatch]);
 
 	return (
 		<div>
