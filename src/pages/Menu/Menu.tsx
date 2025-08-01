@@ -3,8 +3,8 @@ import cn from 'classnames';
 import Search from '../../components/Search/Search.tsx';
 import Heading from '../../components/Heading/Heading.tsx';
 import { ProjectCard } from '../../components/ProjectCard/ProjectCard.tsx';
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import axios from 'axios';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
 export interface IProject {
 	id: string;
@@ -49,7 +49,6 @@ export default function Menu() {
 			})
 			.catch((err) => console.log(err));
 
-	console.log(getMenuO);
 
 	const getMenu = (name?: string) => {
 		setIsLoading(true);

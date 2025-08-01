@@ -1,0 +1,36 @@
+.card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+    background: white;
+}
+
+.card h3 {
+    margin-top: 0;
+}
+
+.channels ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.channels li {
+    padding: 4px 0;
+}
+
+.meta {
+    font-size: 0.8em;
+    color: #666;
+}
+
+.editLink {
+    display: inline-block;
+    margin-top: 8px;
+    color: #0066cc;
+    text-decoration: none;
+}
+
+.editLink:hover {
+    text-decoration: underline;
+}

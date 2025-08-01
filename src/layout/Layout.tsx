@@ -75,6 +75,32 @@ export function Layout() {
 							Корзина
 							<div>{items.reduce((acc, item) => (acc += item.count), 0)}</div>
 						</NavLink>
+
+						<NavLink
+							to="/categories"
+							className={({ isActive }) =>
+								cn(styles['link'], {
+									[styles['active']]: isActive,
+								})
+							}
+						>
+							<img src="/category.svg" alt="Иконка категорий не загружены" />
+							Категории
+						</NavLink>
+
+
+						<NavLink
+							to="/user-channels"
+							className={({ isActive }) =>
+								cn(styles['link'], {
+									[styles['active']]: isActive,
+								})
+							}
+						>
+							<img src="/category.svg" alt="Иконка каналов пользователя не загружены" />
+							Каналы
+						</NavLink>
+
 						<Button className={cn(styles['last-item'])} appearance={'big'} onClick={logout}>
 							Выход
 						</Button>

@@ -9,22 +9,24 @@ import axios from 'axios';
 import AuthLayout from './layout/Auth/AuthLayout.tsx';
 import { Login } from './pages/Login/Login.tsx';
 import { Register } from './pages/Register/Register.tsx';
-import { RequireAuth } from './client/API/RequireAuth.tsx';
+//import { RequireAuth } from './client/API/RequireAuth.tsx';
 import { Provider } from 'react-redux';
 import { store } from './store/store.ts';
 import { Cart } from './pages/Cart/Cart.tsx';
 import { Success } from './pages/Success/Success.tsx';
+import { Categories } from './pages/Categories/Categories.tsx';
+import { CategoryEdit, categoryLoader } from './pages/CategoryEdit/CategoryEdit.tsx';
+import { UserChannelEdit } from './pages/UserChannelEdit/UserChannelEdit.tsx';
+import { UserChannels } from './pages/UserChannels/UserChannels.tsx';
+import { CreateCategoryForm } from './components/CreateCategoryForm/CreateCategoryForm.tsx';
+import { UserChannelCreate } from './pages/UserChanneCreate/UserChannelCreate.tsx';
 
 const Menu = lazy(() => import('./pages/Menu/Menu.tsx'));
 
 const router = createBrowserRouter([
 	{
 		path: '/',
-		element: (
-			<RequireAuth>
-				<Layout />
-			</RequireAuth>
-		),
+		element: <Layout />,
 		children: [
 			{
 				path: '/',
@@ -41,6 +43,32 @@ const router = createBrowserRouter([
 			{
 				path: '/cart',
 				element: <Cart />,
+			},
+			{
+				path: '/user-channels',
+				element: <UserChannels />,
+			},
+			{
+				path: '/user-channels/new',
+				element: <UserChannelCreate />,
+
+			},
+			{
+				path: '/user-channels/edit/:id',
+				element: <UserChannelEdit />,
+			},
+			{
+				path: '/categories',
+				element: <Categories />,
+			},
+			{
+				path: '/categories/new',
+				element: <CreateCategoryForm />,
+			},
+			{
+				path: '/categories/:id',
+				element: <CategoryEdit />,
+				loader: categoryLoader,
 			},
 			{
 				path: '/project/:id/',
