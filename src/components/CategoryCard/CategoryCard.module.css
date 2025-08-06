@@ -1,0 +1,60 @@
+.card {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.card h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.prompt {
+    background: #f9f9f9;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+}
+
+
+.prompt p {
+    margin: 0;
+    color: #555;
+    white-space: pre-wrap;
+
+    max-height: 9.5em; /* высота примерно на 3 строки */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 15; /* ограничить 3 строками */
+    -webkit-box-orient: vertical;
+}
+
+
+.meta {
+    font-size: 0.8rem;
+    color: #888;
+    margin-top: 1rem;
+}
+
+.editLink {
+    display: inline-block;
+    margin-top: 1rem;
+    color: #4a90e2;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.editLink:hover {
+    color: #357abD;
+    text-decoration: underline;
+}

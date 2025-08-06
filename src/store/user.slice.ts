@@ -1,0 +1,153 @@
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { loadState } from './storage.ts';
+import axios from 'axios';
+import { RootState } from './store.ts';
+
+export const JWT_PERSISTENT_STATE = 'userData';
+
+export interface UserPersistentState {
+	jwt: string | null;
+}
+export interface UserState {
+	jwt: string | null;
+	loginState: null | 'rejected';
+	loginErrorMessage?: string;
+	registerErrorMessage?: string;
+	profile?: IUserProfile;
+	userProfileErrorMessage?: string;
+	userProfileLoadingMessage?: string;
+}
+
+export interface IUserProfile {
+	id: string;
+	email: string | null;
+	passwordHash: string;
+	address: null | string;
+	name: string | null;
+	phone: string | null;
+	restoreToken: string | null;
+}
+
+
+export const login = createAsyncThunk(
+	'user/login',
+	(params: { email: string; password: string }) => {
+		const { email, password } = params;
+		return axios
+			.post<{ access: string }>(`http://localhost:3002/api/auth/login`, {
+				email: email,
+				password: password,
+			})
+			.then(({ data }) => data)
+			.catch((err) => {
+				throw new Error(err.response?.data.message);
+			});
+	},
+);
+
+export const userProfileNew = createAsyncThunk<IUserProfile, void, { state: RootState }>(
+	'user/profile/new',
+	(_, thunkAPI) => {
+		const jwt = thunkAPI.getState().user.jwt;
+		return axios
+			.get<IUserProfile>(`http://localhost:3002/api/auth/profile`, {
+				headers: {
+					Authorization: `Bearer ${jwt}`,
+				},
+			})
+			.then(({ data }) => {
+				debugger
+				return data;
+			})
+			.catch((err) => {
+				throw new Error(err.response?.data.message);
+			});
+	},
+);
+
+export const register = createAsyncThunk(
+	'user/register',
+	(params: { email: string; password: string; name: string }) => {
+		const { name, password, email } = params;
+		return axios
+			.post<{ access_token: string }>(`http://localhost:3002/api/auth/register`, {
+				email,
+				password,
+				name,
+			})
+			.then(({ data }) => data)
+			.catch((err) => {
+				throw new Error(err.response?.data.message);
+			});
+	},
+);
+
+const initialState: UserState = {
+	jwt: loadState<UserPersistentState>(JWT_PERSISTENT_STATE)?.jwt ?? null,
+	loginState: null,
+};
+
+export const userSlice = createSlice({
+	name: 'user',
+	initialState,
+	reducers: {
+		logout: (state) => {
+			state.jwt = null;
+		},
+		clearLoginError: (state) => {
+			state.loginErrorMessage = undefined;
+		},
+		clearUserProfileError: (state) => {
+			state.userProfileErrorMessage = undefined;
+		},
+		clearUserProfileLoading: (state) => {
+			state.userProfileLoadingMessage = undefined;
+		},
+	},
+	extraReducers: (builder) => {
+		builder.addCase(login.fulfilled, (state, action: PayloadAction<{ access_token: string }>) => {
+			if (!action.payload) {
+				return;
+			}
+			state.jwt = action.payload.access_token;
+		});
+		builder.addCase(login.rejected, (state, action) => {
+			state.loginErrorMessage = action.error.message;
+		});
+
+		builder.addCase(userProfileNew.fulfilled, (state, action: PayloadAction<IUserProfile>) => {
+			if (!action.payload) {
+				return;
+			}
+			state.profile = action.payload;
+			debugger
+			state.userProfileLoadingMessage = undefined;
+		});
+		builder.addCase(userProfileNew.rejected, (state, action) => {
+			state.userProfileErrorMessage = action.error.message;
+			state.userProfileLoadingMessage = undefined;
+			state.jwt = null;
+		});
+
+		builder.addCase(userProfileNew.pending, (state, action) => {
+			state.userProfileLoadingMessage = 'loading...';
+		});
+
+		builder.addCase(
+			register.fulfilled,
+			(state, action: PayloadAction<{ access_token: string }>) => {
+				if (!action.payload) {
+					return;
+				}
+				state.jwt = action.payload.access_token;
+			},
+		);
+
+		builder.addCase(register.rejected, (state, action) => {
+			state.registerErrorMessage = action.error.message;
+		});
+	},
+});
+
+export default userSlice.reducer;
+export const userActions = userSlice.actions;

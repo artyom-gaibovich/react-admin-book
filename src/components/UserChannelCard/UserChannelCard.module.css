@@ -1,0 +1,90 @@
+.card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    background: white;
+    position: relative;
+}
+
+.card h3 {
+    margin-top: 0;
+    color: var(--text-color);
+}
+
+.channels ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.channels li {
+    padding: 0.25rem 0;
+}
+
+.actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+
+.editLink {
+    color: #4a90e2;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border: 1px solid #4a90e2;
+    border-radius: 4px;
+    transition: all 0.3s;
+}
+
+.editLink:hover {
+    background: #4a90e2;
+    color: white;
+}
+
+.generateButton {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.generateButton:hover {
+    background: #3e8e41;
+}
+
+.generateButton:disabled {
+    background: #cccccc;
+    cursor: not-allowed;
+}
+
+.error {
+    color: #ff4444;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.modalContent {
+    padding: 1rem;
+}
+
+.generatedText {
+    background: #f9f9f9;
+    padding: 1rem;
+    border-radius: 4px;
+    margin: 1rem 0;
+    white-space: pre-wrap;
+}
+
+.closeButton {
+    background: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    display: block;
+    margin: 0 auto;
+}
