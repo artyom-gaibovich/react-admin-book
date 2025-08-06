@@ -33,7 +33,6 @@ export function Layout() {
 	}, [dispatch]);
 
 	return (
-		<div>
 			<div className={cn(styles['layout'])}>
 				<div className={cn(styles['sidebar'])}>
 					<div className={cn(styles['user'])}>
@@ -97,7 +96,7 @@ export function Layout() {
 								})
 							}
 						>
-							<img src="/category.svg" alt="Иконка каналов пользователя не загружены" />
+							<img src="/channels.png" alt="Иконка каналов пользователя не загружены" />
 							Каналы
 						</NavLink>
 
@@ -111,6 +110,5 @@ export function Layout() {
 					<Outlet />
 				</div>
 			</div>
-		</div>
 	);
 }

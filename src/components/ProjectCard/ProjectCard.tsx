@@ -1,50 +1,31 @@
-import { ProjectCardProps } from './ProjectCard.props';
-import styles from './ProjectCard.module.css';
 import cn from 'classnames';
-import { ProjectActions } from '../ProjectTechStack/ProjectTechStack.tsx';
-import { ProjectTechStack } from '../ProjectActions/ProjectActions.tsx';
-import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../store/store.ts';
-import { cartActions } from '../../store/cart.slice.ts';
-import { FormEvent } from 'react';
+import styles from './ProjectCard.module.css';
 
-export function ProjectCard({
-	title,
-	description,
-	techStack,
-	children,
-	price,
-	isLoading = false,
-	className,
-	...props
-}: ProjectCardProps) {
-	if (isLoading) {
-		return <div className={cn(styles.skeleton, 'animate-pulse', className)} {...props} />;
-	}
+interface IProjectCardProps {
+	id: number;
+	title: string;
+	description?: string;
+	price: number;
+	image?: string;
+}
 
-	const dispatch = useDispatch<AppDispatch>();
-
-	const add = (e: FormEvent) => {
-		e.preventDefault();
-		console.log('IDDD', props.id);
-		dispatch(cartActions.add(Number(props.id)));
-	};
+export function ProjectCard({ id, title, description, price, image }: IProjectCardProps) {
 	return (
-		<Link to={`/project/${props.id}`} className={cn(styles['link'])}>
-			<article className={cn(styles['card'], className)} {...props}>
-				<div className={cn(styles['content'])}>
-					<button className={styles['add-to-cart']} onClick={add}>
-						<img src="/icons8-add-50.png" alt="Добавить в корзину" />
-					</button>
-					<div className={cn(styles['title'])}>{title}</div>
-					<p className={cn(styles['description'])}>{description}</p>
-					<div className={cn(styles['price'])}>{price}</div>
-					<ProjectTechStack items={techStack} className={cn(styles.techSection)} />
-					{children}
+		<div className={cn(styles['project-card'])} key={id}>
+			{image && (
+				<div className={cn(styles['project-image-wrapper'])}>
+					<img className={cn(styles['project-image'])} src={image} alt={title} />
 				</div>
-				<ProjectActions className={cn(styles['actions'])} />
-			</article>
-		</Link>
+			)}
+			<h3 className={cn(styles['project-title'])} title={title}>
+				{title}
+			</h3>
+			<p className={cn(styles['project-description'])}>
+				{description || 'Описание отсутствует'}
+			</p>
+			<div className={cn(styles['project-price'])}>
+				Цена: {price.toLocaleString('ru-RU')} ₽
+			</div>
+		</div>
 	);
 }

@@ -75,13 +75,13 @@ export function UserChannelEdit() {
 
 			if (isNew) {
 				await axios.post('http://localhost:3002/api/user-channels', payload);
-				setSuccess('Channel created successfully!');
+				setSuccess('Канал был успешно создан!');
 			} else if (id) {
-				await axios.put(`http://localhost:3002/api/user-channels/${id}`, {
+				await axios.patch(`http://localhost:3002/api/user-channels/${id}`, {
 					...payload,
 					id,
 				});
-				setSuccess('Channel updated successfully!');
+				setSuccess('Канал обновлен успешно!');
 			}
 
 			setTimeout(() => navigate('/user-channels'), 1500);
@@ -117,7 +117,7 @@ export function UserChannelEdit() {
 	return (
 		<div className={styles.container}>
 			<div className={styles.header}>
-				<h1>{isNew ? 'Create New Channel' : 'Edit Channel'}</h1>
+				<h1>{isNew ? 'Создать' : 'Редактировать'}</h1>
 			</div>
 
 			{error && <div className={styles.error}>{error}</div>}
@@ -125,7 +125,7 @@ export function UserChannelEdit() {
 
 			<form onSubmit={handleSubmit} className={styles.form}>
 				<div className={styles.formGroup}>
-					<label className={styles.label}>Telegram Channel ID</label>
+					<label className={styles.label}>ID Telegram канала</label>
 					<input
 						type="text"
 						className={styles.input}
@@ -134,12 +134,12 @@ export function UserChannelEdit() {
 							setFormData({ ...formData, telegramId: e.target.value })
 						}
 						required
-						placeholder="Enter Telegram channel ID"
+						placeholder="Введите ID Telegram канала"
 					/>
 				</div>
 
 				<div className={styles.formGroup}>
-					<label className={styles.label}>Title</label>
+					<label className={styles.label}>Наименование</label>
 					<input
 						type="text"
 						className={styles.input}
@@ -148,12 +148,12 @@ export function UserChannelEdit() {
 							setFormData({ ...formData, title: e.target.value })
 						}
 						required
-						placeholder="Enter channel title"
+						placeholder="Введите наименование Telegram канала"
 					/>
 				</div>
 
 				<div className={styles.formGroup}>
-					<label className={styles.label}>Category</label>
+					<label className={styles.label}>Категория</label>
 					<select
 						className={styles.select}
 						value={formData.categoryId}
@@ -162,7 +162,7 @@ export function UserChannelEdit() {
 						}
 						required
 					>
-						<option value="">Select a category</option>
+						<option value="">Выберите категорию</option>
 						{categories.map((category) => (
 							<option key={category.id} value={category.id}>
 								{category.name}
@@ -172,7 +172,7 @@ export function UserChannelEdit() {
 				</div>
 
 				<div className={styles.formGroup}>
-					<label className={styles.label}>Channels to Rewrite</label>
+					<label className={styles.label}>Каналы для переписывания контента</label>
 					<div className={styles.channelInputGroup}>
 						{formData.channelsToRewrite.map((channel, index) => (
 							<div key={index} className={styles.channelInputContainer}>
@@ -199,7 +199,7 @@ export function UserChannelEdit() {
 							className={styles.addButton}
 							onClick={addChannel}
 						>
-							Add Channel
+							Добавить канал
 						</button>
 					</div>
 				</div>
@@ -209,7 +209,7 @@ export function UserChannelEdit() {
 					className={styles.submitButton}
 					disabled={isSubmitting}
 				>
-					{isSubmitting ? 'Processing...' : 'Save Changes'}
+					{isSubmitting ? 'Сохранение...' : 'Сохранить изменения'}
 				</button>
 			</form>
 		</div>

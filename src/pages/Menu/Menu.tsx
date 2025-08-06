@@ -3,74 +3,58 @@ import cn from 'classnames';
 import Search from '../../components/Search/Search.tsx';
 import Heading from '../../components/Heading/Heading.tsx';
 import { ProjectCard } from '../../components/ProjectCard/ProjectCard.tsx';
-import axios from 'axios';
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 export interface IProject {
-	id: string;
+	id: number;
 	name: string;
+	description?: string;
 	price: number;
+	image?: string;
+	techStack?: {icon: string, name: string}[]
 }
 
+const MOCK_PROJECTS: IProject[] = [
+	{
+		id: 1,
+		name: 'Проект Битрикс',
+		price: 100,
+		description: 'Проект с отличным функционалом',
+		image: 'https://picsum.photos/400/200?random=1',
+	},
+	{
+		id: 2,
+		name: 'React-приложение',
+		price: 250,
+		description: 'Современный SPA проект',
+		image: 'https://picsum.photos/400/200?random=2',
+	},
+	{
+		id: 3,
+		name: 'Сайт на Next.js',
+		price: 300,
+		description: 'SEO-оптимизированный сайт',
+		image: 'https://picsum.photos/400/200?random=3',
+	},
+];
+
+
 export default function Menu() {
-	const [products, setProducts] = useState<IProject[]>([]);
+	const [products, setProducts] = useState<IProject[]>(MOCK_PROJECTS);
 	const [search, setSearch] = useState<string>('');
 
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [error, setError] = useState<string | undefined>();
-	const getMenuO = () =>
-		new Promise((resolve) =>
-			setTimeout(
-				() =>
-					resolve([
-						{
-							id: 1,
-							title: 'bitrixbitrixbitrixbitri',
-							description:
-								'ok ok okok ok okok ok okok ok okok ok okok ok okok ok okok ok okok ok okok ok okok ok okok ok okok ok okok ok okok ok okok ok okok ok okok ok okok ok okok ok okok ok okok ok okok ok okok ok okok ok okok ok okok ok okok ok okok ok okok ok okok ok okok ok okok ok okok ok okok ok okok ok okok ok okok ok okok ok okok ok ok',
-							techStack: [
-								{
-									icon: '',
-									name: 'PostgreSQL',
-								},
-							],
-						},
-						{ id: 2, title: 'bitrix', description: 'ok ok ok', techStack: [] },
-						{ id: 3, title: 'bitrix', description: 'ok ok ok', techStack: [] },
-						{ id: 4, title: 'bitrix', description: 'ok ok ok', techStack: [] },
-						{ id: 5, title: 'bitrix', description: 'ok ok ok', techStack: [] },
-					]),
-				1000,
-			),
-		)
-			.then((res) => {
-				setIsLoading(true);
-				setProducts(res as IProject[]);
-			})
-			.catch((err) => console.log(err));
-
-
-	const getMenu = (name?: string) => {
-		setIsLoading(true);
-		return axios
-			.get<IProject[]>(`https://purpleschool.ru/pizza-api-demo/products`, {
-				params: {
-					name,
-				},
-			})
-			.then(({ data }) => {
-				setProducts(data);
-				setIsLoading(false);
-			})
-			.catch((err) => {
-				console.error(err);
-				setError(err.message);
-				setIsLoading(false);
-			});
-	};
 
 	useEffect(() => {
-		getMenu(search);
+		setIsLoading(true);
+		const filtered = MOCK_PROJECTS.filter(project =>
+			project.name.toLowerCase().includes(search.toLowerCase())
+		);
+		setTimeout(() => {
+			setProducts(filtered);
+			setIsLoading(false);
+		}, 500);
 	}, [search]);
 
 	const updateFilter = (e: ChangeEvent<HTMLInputElement>) => {
@@ -78,34 +62,27 @@ export default function Menu() {
 	};
 
 	return (
-		<>
-			<div className={cn(styles['menu'])}>
-				<div className={cn(styles['menu-header'])}>
-					<Heading>
-						<h1>Меню</h1>
-					</Heading>
-					<Search placeholder="Введите наименование проекта" onChange={updateFilter} />
-				</div>
-				<div className={cn(styles['menu-content'])}>
-					{error && <>{error}</>}
-					{!isLoading &&
-						products.map((product) => (
-							<ProjectCard
-								id={product.id}
-								title={product.name}
-								price={product.price}
-								description={'Рандомный продукт'}
-								techStack={[
-									{
-										icon: '',
-										name: 'PostgreSQL',
-									},
-								]}
-							/>
-						))}
-					{isLoading && <div>Идет загрузка продуктов</div>}
-				</div>
+		<div className={styles.container}>
+			<div className={cn(styles['menu-header'])}>
+				<Heading><h1>Меню</h1></Heading>
+				<Search placeholder="Введите наименование проекта" onChange={updateFilter} />
 			</div>
-		</>
+			<div className={cn(styles['menu-content'])}>
+				{error && <div style={{color: 'red'}}>{error}</div>}
+				{!isLoading && products.length === 0 && <div>Ничего не найдено</div>}
+				{!isLoading && products.map(product => (
+					<ProjectCard
+						key={product.id}
+						id={product.id}
+						title={product.name}
+						price={product.price}
+						description={product.description}
+						techStack={product.techStack}
+						image={product.image}
+					/>
+				))}
+				{isLoading && <div>Идет загрузка продуктов...</div>}
+			</div>
+		</div>
 	);
 }

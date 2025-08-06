@@ -20,7 +20,7 @@ export function CreateCategoryForm() {
 
 		try {
 			await axios.post('http://localhost:3002/api/categories', formData);
-			navigate('/categories'); // Перенаправляем после успешного создания
+			navigate('/categories');
 		} catch (err) {
 			if (axios.isAxiosError(err)) {
 				setError(err.response?.data?.message || err.message);
@@ -42,14 +42,14 @@ export function CreateCategoryForm() {
 
 	return (
 		<div className={styles.container}>
-			<h1 className={styles.title}>Create New Category</h1>
+			<h1 className={styles.title}>Создать новую категорию</h1>
 
 			{error && <div className={styles.error}>{error}</div>}
 
 			<form onSubmit={handleSubmit} className={styles.form}>
 				<div className={styles.formGroup}>
 					<label htmlFor="name" className={styles.label}>
-						Category Name
+						Имя категории
 					</label>
 					<input
 						type="text"
@@ -59,7 +59,7 @@ export function CreateCategoryForm() {
 						onChange={handleChange}
 						className={styles.input}
 						required
-						placeholder="Enter category name"
+						placeholder="Введите имя категории"
 					/>
 				</div>
 
@@ -74,7 +74,7 @@ export function CreateCategoryForm() {
 						onChange={handleChange}
 						className={styles.textarea}
 						required
-						placeholder="Enter the prompt for this category"
+						placeholder="Введите промпт для данной категории"
 						rows={5}
 					/>
 				</div>
@@ -86,14 +86,14 @@ export function CreateCategoryForm() {
 						onClick={() => navigate('/categories')}
 						disabled={isSubmitting}
 					>
-						Cancel
+						Отменить
 					</button>
 					<button
 						type="submit"
 						className={styles.submitButton}
 						disabled={isSubmitting}
 					>
-						{isSubmitting ? 'Creating...' : 'Create Category'}
+						{isSubmitting ? 'Создание...' : 'Создать категорию'}
 					</button>
 				</div>
 			</form>

@@ -1,18 +1,11 @@
-// pages/CategoryEdit/CategoryEdit.tsx
 import { useState } from 'react';
 import { Await, useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import { Suspense } from 'react';
-import { ICategory } from '../Categories/Categories.tsx';
 import axios, { AxiosError, isAxiosError } from 'axios';
+import styles from './CategoryEdit.module.css';
+import { ICategory } from '../../types/category.interface.ts';
 
 
-
-export async function categoryLoader({ params }: { params: any }) {
-	const { data } = await axios.get<ICategory>(
-		`http://localhost:3002/api/categories/${params.id}`
-	);
-	return { data };
-}
 
 export function CategoryEdit() {
 	const { id } = useParams();
@@ -22,7 +15,6 @@ export function CategoryEdit() {
 		name: '',
 		prompt: '',
 	});
-	const [channels, setChannels] = useState<string[]>(['']);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 
@@ -36,9 +28,7 @@ export function CategoryEdit() {
 			navigate('/categories');
 		} catch (err) {
 			if (isAxiosError(err)) {
-
 				setError(err.response?.data?.message || err.message);
-
 			} else if (err instanceof Error) {
 				setError(err.message);
 			}
@@ -47,41 +37,33 @@ export function CategoryEdit() {
 		}
 	};
 
-	const handleChannelChange = (index: number, value: string) => {
-		const newChannels = [...channels];
-		newChannels[index] = value;
-		setChannels(newChannels);
-	};
-
-	const addChannel = () => {
-		setChannels([...channels, '']);
-	};
-
-	const removeChannel = (index: number) => {
-		const newChannels = channels.filter((_, i) => i !== index);
-		setChannels(newChannels);
-	};
 
 	return (
-		<div>
-			<h1>Edit Category</h1>
-			<Suspense fallback={'Loading...'}>
-				<Await resolve={data} errorElement={<>Error loading category!</>}>
-					{({ data: category }) => {
-						if (formData.name === '' && category) {
+		<div className={styles.container}>
+			<div className={styles.header}>
+				<h1 className={styles.title}>Редактирование категории</h1>
+			</div>
+
+			{error && <div className={styles.error}>{error}</div>}
+
+			<Suspense fallback={<div className={styles.loading}>Загрузка...</div>}>
+				<Await resolve={data} errorElement={<div className={styles.error}>Error loading category!</div>}>
+					{(data) => {
+						if (formData.name === '' && data.name) {
 							setFormData({
-								name: category.name,
-								prompt: category.prompt,
+								name: data.name,
+								prompt: data.prompt,
 							});
 						}
 
 						return (
-							<form onSubmit={handleSubmit}>
-								<div>
-									<label>
-										Name:
+							<form onSubmit={handleSubmit} className={styles.form}>
+								<div className={styles.formGroup}>
+									<label className={styles.label}>
+										Имя:
 										<input
 											type="text"
+											className={styles.input}
 											value={formData.name}
 											onChange={(e) =>
 												setFormData({ ...formData, name: e.target.value })
@@ -90,10 +72,12 @@ export function CategoryEdit() {
 										/>
 									</label>
 								</div>
-								<div>
-									<label>
-										Prompt:
+
+								<div className={styles.formGroup}>
+									<label className={styles.label}>
+										Промпт:
 										<textarea
+											className={styles.textarea}
 											value={formData.prompt}
 											onChange={(e) =>
 												setFormData({ ...formData, prompt: e.target.value })
@@ -103,34 +87,25 @@ export function CategoryEdit() {
 									</label>
 								</div>
 
-								<div>
-									<label>Channels to Rewrite:</label>
-									{channels.map((channel, index) => (
-										<div key={index}>
-											<input
-												type="text"
-												value={channel}
-												onChange={(e) =>
-													handleChannelChange(index, e.target.value)
-												}
-											/>
-											<button
-												type="button"
-												onClick={() => removeChannel(index)}
-											>
-												Remove
-											</button>
-										</div>
-									))}
-									<button type="button" onClick={addChannel}>
-										Add Channel
-									</button>
+								<div className={styles.formGroup}>
 								</div>
 
-								{error && <div style={{ color: 'red' }}>{error}</div>}
-								<button type="submit" disabled={isSubmitting}>
-									{isSubmitting ? 'Saving...' : 'Save Changes'}
-								</button>
+								<div className={styles.actions}>
+									<button
+										type="button"
+										className={styles.cancelButton}
+										onClick={() => navigate('/categories')}
+									>
+										Отменить
+									</button>
+									<button
+										type="submit"
+										className={styles.submitButton}
+										disabled={isSubmitting}
+									>
+										{isSubmitting ? 'Сохранить...' : 'Сохранить изменения'}
+									</button>
+								</div>
 							</form>
 						);
 					}}

@@ -1,24 +1,37 @@
 :root {
 	--font: 'Open Sans', sans-serif;
-	--primary-color: #fe724c;
-	--primary-hover-color: #df6442;
+	--primary-color: #5181b8; /* VK/Telegram синий */
+	--primary-hover-color: #3b6ea5;
+	--accent-green: #4CAF50;
+	--accent-green-hover: #45a049;
+	--accent-red: #ff4444;
+	--accent-red-hover: #cc0000;
+	--disabled-color: #cccccc;
 	--white-color: #ffffff;
-	--text-color: #5a5a5a;
+	--light-gray: #f5f5f5;
+	--light-gray-hover: #e5e5e5;
+	--border-color: #ddd;
+	--text-color: #333;
 	--text-secondary-color: #5b5b5e;
 	--separator-color: #d4d6e0;
+	--error-bg: #ffeeee;
+	--success-bg: #eeffee;
+	--focus-ring: rgba(81, 129, 184, 0.2); /* синий подсвет */
 }
 
 body {
-	font-family: 'Open Sans', sans-serif;
+	font-family: var(--font);
 }
 
 p {
 	color: var(--text-secondary-color);
-	font-family: 'Open Sans', sans-serif;
+	font-family: var(--font), serif;
 	text-decoration: none;
 }
+
 a {
 	color: var(--primary-color);
-	font-family: 'Open Sans', sans-serif;
+	font-family: var(--font), serif;
 	text-decoration: none;
 }
+

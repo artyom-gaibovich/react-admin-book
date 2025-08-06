@@ -10,10 +10,10 @@ export function CategoryCard({ category }: { category: ICategory }) {
 				<p>{category.prompt}</p>
 			</div>
 			<div className={styles.meta}>
-				<span>Created: {new Date(category.createdAt).toLocaleDateString()}</span>
+				<span>Создана: {new Date(category.createdAt).toLocaleDateString()}</span>
 			</div>
 			<Link to={`/categories/${category.id}`} className={styles.editLink}>
-				Edit Category
+				Редактировать
 			</Link>
 		</div>
 	);

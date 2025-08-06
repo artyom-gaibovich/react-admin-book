@@ -1,3 +1,5 @@
+import { ICategory } from './category.interface.ts';
+
 export interface IUserChannel {
 	find(arg0: (ch: any) => boolean): unknown;
 	id: string;
@@ -8,6 +10,7 @@ export interface IUserChannel {
 	channelsToRewrite: string[];
 	createdAt: string;
 	updatedAt: string;
+	category?: ICategory
 }
 
 export interface ICreateUserChannelDto {

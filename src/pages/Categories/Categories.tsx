@@ -31,16 +31,16 @@ export function Categories() {
 	return (
 		<div className={styles.container}>
 			<div className={styles.header}>
-				<h1>Categories</h1>
+				<h1>Категории</h1>
 				<Link to="/categories/new" className={styles.addButton}>
-					Create Category
+					Создать категорию
 				</Link>
 			</div>
 
 			<div className={styles.content}>
 				{error && <div className={styles.error}>{error}</div>}
 				{isLoading ? (
-					<div className={styles.loading}>Loading categories...</div>
+					<div className={styles.loading}>Загрузка категорий...</div>
 				) : (
 					<div className={styles.grid}>
 						{categories.map((category) => (

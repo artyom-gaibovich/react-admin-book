@@ -9,24 +9,30 @@ import axios from 'axios';
 import AuthLayout from './layout/Auth/AuthLayout.tsx';
 import { Login } from './pages/Login/Login.tsx';
 import { Register } from './pages/Register/Register.tsx';
-//import { RequireAuth } from './client/API/RequireAuth.tsx';
+import { RequireAuth } from './client/API/RequireAuth.tsx';
 import { Provider } from 'react-redux';
 import { store } from './store/store.ts';
 import { Cart } from './pages/Cart/Cart.tsx';
 import { Success } from './pages/Success/Success.tsx';
 import { Categories } from './pages/Categories/Categories.tsx';
-import { CategoryEdit, categoryLoader } from './pages/CategoryEdit/CategoryEdit.tsx';
+import { CategoryEdit } from './pages/CategoryEdit/CategoryEdit.tsx';
 import { UserChannelEdit } from './pages/UserChannelEdit/UserChannelEdit.tsx';
 import { UserChannels } from './pages/UserChannels/UserChannels.tsx';
 import { CreateCategoryForm } from './components/CreateCategoryForm/CreateCategoryForm.tsx';
 import { UserChannelCreate } from './pages/UserChanneCreate/UserChannelCreate.tsx';
+import { ICategory } from './types/category.interface.ts';
+import { MyComponent } from './pages/test/MyCompoents.tsx';
 
 const Menu = lazy(() => import('./pages/Menu/Menu.tsx'));
 
 const router = createBrowserRouter([
 	{
 		path: '/',
-		element: <Layout />,
+		element: (
+			<RequireAuth>
+				<Layout />
+			</RequireAuth>
+		),
 		children: [
 			{
 				path: '/',
@@ -51,7 +57,6 @@ const router = createBrowserRouter([
 			{
 				path: '/user-channels/new',
 				element: <UserChannelCreate />,
-
 			},
 			{
 				path: '/user-channels/edit/:id',
@@ -66,25 +71,27 @@ const router = createBrowserRouter([
 				element: <CreateCategoryForm />,
 			},
 			{
+				path: '/test',
+				element: <MyComponent></MyComponent>
+			},
+			{
 				path: '/categories/:id',
 				element: <CategoryEdit />,
-				loader: categoryLoader,
+				loader: async ({ params }: { params: any }) => {
+					const { data } = await axios.get<ICategory>(
+						`http://localhost:3002/api/categories/${params.id}`,
+					);
+					return { data };
+				},
 			},
 			{
 				path: '/project/:id/',
 				element: <Project />,
-				loader: ({ params }) => {
+				loader: async ({ params }) => {
+					const data = await axios.get(`https://jsonplaceholder.typicode.com/posts/${params.id}`);
+
 					return {
-						data: new Promise((resolve, reject) =>
-							setTimeout(
-								() =>
-									axios
-										.get(`https://jsonplaceholder.typicode.com/posts/${params.id}`)
-										.then((data) => resolve(data))
-										.catch((e) => reject(e.message)),
-								1000,
-							),
-						),
+						data,
 					};
 				},
 				errorElement: <>Возникла ошибка</>,

@@ -102,7 +102,7 @@ export function UserChannelCreate() {
 			<form onSubmit={handleSubmit} className={styles.form}>
 				<div className={styles.formGroup}>
 					<label className={styles.label}>
-						Telegram Channel ID
+						Telegram ID
 						<input
 							type="text"
 							name="telegramId"
@@ -110,14 +110,14 @@ export function UserChannelCreate() {
 							onChange={handleInputChange}
 							className={styles.input}
 							required
-							placeholder="Enter Telegram channel ID"
+							placeholder="Telegram ID"
 						/>
 					</label>
 				</div>
 
 				<div className={styles.formGroup}>
 					<label className={styles.label}>
-						Title
+						Наименование
 						<input
 							type="text"
 							name="title"
@@ -125,14 +125,14 @@ export function UserChannelCreate() {
 							onChange={handleInputChange}
 							className={styles.input}
 							required
-							placeholder="Enter channel title"
+							placeholder="Введите наименоване канала"
 						/>
 					</label>
 				</div>
 
 				<div className={styles.formGroup}>
 					<label className={styles.label}>
-						Category
+						Категория
 						<select
 							name="categoryId"
 							value={formData.categoryId}
@@ -140,7 +140,7 @@ export function UserChannelCreate() {
 							className={styles.select}
 							required
 						>
-							<option value="">Select a category</option>
+							<option value="">Выберите категорию</option>
 							{categories.map((category) => (
 								<option key={category.id} value={category.id}>
 									{category.name}
@@ -151,7 +151,7 @@ export function UserChannelCreate() {
 				</div>
 
 				<div className={styles.formGroup}>
-					<label className={styles.label}>Source Channels to Rewrite</label>
+					<label className={styles.label}>Источники для переформулирования контента</label>
 					<div className={styles.channelsList}>
 						{formData.channelsToRewrite.map((channel, index) => (
 							<div key={index} className={styles.channelItem}>
@@ -179,7 +179,7 @@ export function UserChannelCreate() {
 							onClick={addChannel}
 							className={styles.addChannelButton}
 						>
-							+ Add Another Source Channel
+							+ Добавить еще один исчточник
 						</button>
 					</div>
 				</div>

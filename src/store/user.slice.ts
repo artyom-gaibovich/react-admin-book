@@ -28,16 +28,13 @@ export interface IUserProfile {
 	restoreToken: string | null;
 }
 
-export interface IRegisterResponse {
-	access_token: string;
-}
 
 export const login = createAsyncThunk(
 	'user/login',
 	(params: { email: string; password: string }) => {
 		const { email, password } = params;
 		return axios
-			.post<{ accessToken: string }>(`https://purpleschool.ru/pizza-api-demo/auth/login`, {
+			.post<{ access: string }>(`http://localhost:3002/api/auth/login`, {
 				email: email,
 				password: password,
 			})
@@ -48,31 +45,20 @@ export const login = createAsyncThunk(
 	},
 );
 
-export const userProfile = createAsyncThunk('user/profile', (params: { jwt: string | null }) => {
-	const { jwt } = params;
-	return axios
-		.get<IUserProfile>(`https://purpleschool.ru/pizza-api-demo/user/profile/dd`, {
-			headers: {
-				Authorization: `Bearer ${jwt}`,
-			},
-		})
-		.then(({ data }) => data)
-		.catch((err) => {
-			throw new Error(err.response?.data.message);
-		});
-});
-
 export const userProfileNew = createAsyncThunk<IUserProfile, void, { state: RootState }>(
 	'user/profile/new',
 	(_, thunkAPI) => {
 		const jwt = thunkAPI.getState().user.jwt;
 		return axios
-			.get<IUserProfile>(`https://purpleschool.ru/pizza-api-demo/user/profile`, {
+			.get<IUserProfile>(`http://localhost:3002/api/auth/profile`, {
 				headers: {
 					Authorization: `Bearer ${jwt}`,
 				},
 			})
-			.then(({ data }) => data)
+			.then(({ data }) => {
+				debugger
+				return data;
+			})
 			.catch((err) => {
 				throw new Error(err.response?.data.message);
 			});
@@ -84,7 +70,7 @@ export const register = createAsyncThunk(
 	(params: { email: string; password: string; name: string }) => {
 		const { name, password, email } = params;
 		return axios
-			.post<{ access_token: string }>(`https://purpleschool.ru/pizza-api-demo/auth/register`, {
+			.post<{ access_token: string }>(`http://localhost:3002/api/auth/register`, {
 				email,
 				password,
 				name,
@@ -134,11 +120,13 @@ export const userSlice = createSlice({
 				return;
 			}
 			state.profile = action.payload;
+			debugger
 			state.userProfileLoadingMessage = undefined;
 		});
 		builder.addCase(userProfileNew.rejected, (state, action) => {
 			state.userProfileErrorMessage = action.error.message;
 			state.userProfileLoadingMessage = undefined;
+			state.jwt = null;
 		});
 
 		builder.addCase(userProfileNew.pending, (state, action) => {
