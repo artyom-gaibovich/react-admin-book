@@ -14,34 +14,37 @@ const YouTube = () => {
 		videoUrl: '',
 	});
 	const [generatedContent, setGeneratedContent] = useState('');
+	const [tags, setTags] = useState('');
 	const [error, setError] = useState<string | null>(null);
 	const [isGenerating, setIsGenerating] = useState(false);
 	const [copySuccess, setCopySuccess] = useState<string | null>(null);
-
+	const loadCategories = async () => {
+		try {
+			const { data } = await axios.get<ICategory[]>(`${apiUrl}/api/categories`);
+			setCategories(data);
+		} catch (err) {
+			console.error('Failed to load categories', err);
+		}
+	};
 	useEffect(() => {
-		const loadCategories = async () => {
-			try {
-				const { data } = await axios.get<ICategory[]>(`${apiUrl}/api/categories`);
-				setCategories(data);
-			} catch (err) {
-				console.error('Failed to load categories', err);
-			}
-		};
-
 		loadCategories();
-	}, []);
+	}, [loadCategories]);
 
 	const handleGenerate = async (e: Event) => {
 		e.preventDefault();
 		setIsGenerating(true);
 		setError(null);
 		try {
-			const { data } = await axios.post<{ message: string }>(`${apiUrl}/api/youtube`, {
-				categoryId: formData.categoryId,
-				videoUrl: formData.videoUrl,
-			});
+			const { data } = await axios.post<{ message: string; tags: string }>(
+				`${apiUrl}/api/youtube`,
+				{
+					categoryId: formData.categoryId,
+					videoUrl: formData.videoUrl,
+				},
+			);
 
 			setGeneratedContent(data.message);
+			setTags(data.tags);
 		} catch (err) {
 			if (axios.isAxiosError(err)) {
 				setError(err.response?.data?.message || err.message);
@@ -117,7 +120,7 @@ const YouTube = () => {
 					</button>
 					{isGenerating}
 					{copySuccess && <div className={styles.copyStatus}>{copySuccess}</div>}
-					<pre className={styles.generatedText}>{generatedContent}</pre>
+					<pre className={styles.generatedText}>{tags}</pre>
 				</>
 			) : null}
 		</div>
