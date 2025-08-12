@@ -1,0 +1,89 @@
+.container {
+	width: 140vh;
+	margin: 0 auto;
+	padding: 2rem;
+}
+
+.form {
+	background: var(--white-color);
+	padding: 2rem;
+	border-radius: 8px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+.formGroup {
+	margin-bottom: 1.5rem;
+}
+
+
+
+.label {
+	display: block;
+	margin-bottom: 0.5rem;
+	font-weight: 600;
+	color: var(--text-color);
+}
+
+.input {
+	width: 100%;
+	padding: 0.75rem;
+	border: 1px solid var(--border-color);
+	border-radius: 4px;
+	font-size: 1rem;
+	transition: all 0.3s;
+}
+
+
+.select {
+	composes: input;
+}
+
+
+
+.submitButton {
+	background: var(--primary-color);
+	color: white;
+	border: none;
+	border-radius: 4px;
+	padding: 0.75rem 1.5rem;
+	font-size: 1rem;
+	cursor: pointer;
+	transition: background 0.3s;
+	width: 100%;
+	margin-top: 1rem;
+}
+
+.submitButton:hover {
+	background: var(--primary-hover-color);
+}
+
+.submitButton:disabled {
+	background: var(--disabled-color);
+	cursor: not-allowed;
+}
+
+
+.generatedText {
+	background: #f9f9f9;
+	padding: 1rem;
+	border-radius: 4px;
+	margin: 1rem 0;
+	white-space: pre-wrap;
+}
+
+
+.copyButton {
+	margin-top: 1rem;
+	background-color: #4caf50;
+	color: white;
+	border: none;
+	padding: 0.5rem 1rem;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+.copyButton:hover {
+	background-color: #45a049;
+}
+

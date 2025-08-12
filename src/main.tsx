@@ -22,6 +22,8 @@ import { CreateCategoryForm } from './components/CreateCategoryForm/CreateCatego
 import { UserChannelCreate } from './pages/UserChanneCreate/UserChannelCreate.tsx';
 import { ICategory } from './types/category.interface.ts';
 import { MyComponent } from './pages/test/MyCompoents.tsx';
+import YouTube from './pages/YouTube/YouTube.tsx';
+export const apiUrl = import.meta.env.VITE_API_URL_BACKEND;
 
 const Menu = lazy(() => import('./pages/Menu/Menu.tsx'));
 
@@ -71,6 +73,10 @@ const router = createBrowserRouter([
 				element: <CreateCategoryForm />,
 			},
 			{
+				path: '/youtube',
+				element: <YouTube></YouTube>
+			},
+			{
 				path: '/test',
 				element: <MyComponent></MyComponent>
 			},
@@ -79,7 +85,7 @@ const router = createBrowserRouter([
 				element: <CategoryEdit />,
 				loader: async ({ params }: { params: any }) => {
 					const { data } = await axios.get<ICategory>(
-						`http://localhost:3002/api/categories/${params.id}`,
+						`${apiUrl}/api/categories/${params.id}`,
 					);
 					return { data };
 				},

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from './UserChannelCreate.module.css';
 import { ICreateUserChannelDto } from '../../types/userChannel.interface';
+import { apiUrl } from '../../main.tsx';
 
 const USER_ID = '00000000-0000-0000-0000-000000000000';
 
@@ -23,7 +24,7 @@ export function UserChannelCreate() {
 		// Загружаем категории для выпадающего списка
 		const loadCategories = async () => {
 			try {
-				const { data } = await axios.get('http://localhost:3002/api/categories');
+				const { data } = await axios.get(`${apiUrl}/api/categories`);
 				setCategories(data);
 			} catch (err) {
 				console.error('Failed to load categories', err);
@@ -46,7 +47,7 @@ export function UserChannelCreate() {
 				channelsToRewrite: formData.channelsToRewrite.filter(ch => ch.trim() !== ''),
 			};
 
-			await axios.post('http://localhost:3002/api/user-channels', payload);
+			await axios.post(`${apiUrl}/api/user-channels`, payload);
 			navigate('/user-channels');
 		} catch (err) {
 			if (axios.isAxiosError(err)) {

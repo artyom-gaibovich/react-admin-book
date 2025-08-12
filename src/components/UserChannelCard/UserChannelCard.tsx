@@ -3,7 +3,8 @@ import axios from 'axios';
 import styles from './UserChannelCard.module.css';
 import { IUserChannel } from '../../types/userChannel.interface';
 import { Link } from 'react-router-dom';
-import { Modal } from '../../Modal/Modal.tsx';
+import { Modal } from '../Modal/Modal.tsx';
+import { apiUrl } from '../../main.tsx';
 
 export function UserChannelCard({ channel, handleDelete }: { channel: IUserChannel, handleDelete: () => void }) {
 	const [isGenerating, setIsGenerating] = useState(false);
@@ -17,7 +18,7 @@ export function UserChannelCard({ channel, handleDelete }: { channel: IUserChann
 
 		try {
 			const { data } = await axios.post<{ message: string }>(
-				'http://localhost:3002/api/messages/rewrite',
+				`${apiUrl}/api/messages/rewrite`,
 				{ userChannelId: channel.id }
 			);
 

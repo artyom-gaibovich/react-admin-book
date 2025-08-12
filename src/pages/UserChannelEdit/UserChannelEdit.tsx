@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import styles from './UserChannelEdit.module.css';
 import { IUserChannel, ICreateUserChannelDto, IUpdateUserChannelDto } from '../../types/userChannel.interface';
+import { apiUrl } from '../../main.tsx';
 
 const USER_ID = '00000000-0000-0000-0000-000000000000';
 
@@ -26,7 +27,7 @@ export function UserChannelEdit() {
 	useEffect(() => {
 		const loadCategories = async () => {
 			try {
-				const { data } = await axios.get('http://localhost:3002/api/categories');
+				const { data } = await axios.get(`${apiUrl}/api/categories`);
 				setCategories(data);
 			} catch (err) {
 				console.error('Failed to load categories', err);
@@ -37,7 +38,7 @@ export function UserChannelEdit() {
 			const loadChannel = async () => {
 				try {
 					const { data } = await axios.get<IUserChannel[]>(
-						`http://localhost:3002/api/user-channels/${USER_ID}`
+						`${apiUrl}/api/user-channels/${USER_ID}`
 					);
 
 					const channelData = data.find(ch => ch.id === id);
@@ -74,10 +75,10 @@ export function UserChannelEdit() {
 			};
 
 			if (isNew) {
-				await axios.post('http://localhost:3002/api/user-channels', payload);
+				await axios.post(`${apiUrl}/api/user-channels`, payload);
 				setSuccess('Канал был успешно создан!');
 			} else if (id) {
-				await axios.patch(`http://localhost:3002/api/user-channels/${id}`, {
+				await axios.patch(`${apiUrl}/api/user-channels/${id}`, {
 					...payload,
 					id,
 				});

@@ -1,11 +1,9 @@
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { Await, useLoaderData, useNavigate, useParams } from 'react-router-dom';
-import { Suspense } from 'react';
-import axios, { AxiosError, isAxiosError } from 'axios';
+import axios, { isAxiosError } from 'axios';
 import styles from './CategoryEdit.module.css';
 import { ICategory } from '../../types/category.interface.ts';
-
-
+import { apiUrl } from '../../main.tsx';
 
 export function CategoryEdit() {
 	const { id } = useParams();
@@ -22,7 +20,7 @@ export function CategoryEdit() {
 		e.preventDefault();
 		setIsSubmitting(true);
 		try {
-			await axios.patch(`http://localhost:3002/api/categories/${id}`, {
+			await axios.patch(`${apiUrl}/api/categories/${id}`, {
 				...formData,
 			});
 			navigate('/categories');
@@ -37,7 +35,6 @@ export function CategoryEdit() {
 		}
 	};
 
-
 	return (
 		<div className={styles.container}>
 			<div className={styles.header}>
@@ -47,7 +44,10 @@ export function CategoryEdit() {
 			{error && <div className={styles.error}>{error}</div>}
 
 			<Suspense fallback={<div className={styles.loading}>Загрузка...</div>}>
-				<Await resolve={data} errorElement={<div className={styles.error}>Error loading category!</div>}>
+				<Await
+					resolve={data}
+					errorElement={<div className={styles.error}>Error loading category!</div>}
+				>
 					{(data) => {
 						if (formData.name === '' && data.name) {
 							setFormData({
@@ -65,9 +65,7 @@ export function CategoryEdit() {
 											type="text"
 											className={styles.input}
 											value={formData.name}
-											onChange={(e) =>
-												setFormData({ ...formData, name: e.target.value })
-											}
+											onChange={(e) => setFormData({ ...formData, name: e.target.value })}
 											required
 										/>
 									</label>
@@ -79,16 +77,13 @@ export function CategoryEdit() {
 										<textarea
 											className={styles.textarea}
 											value={formData.prompt}
-											onChange={(e) =>
-												setFormData({ ...formData, prompt: e.target.value })
-											}
+											onChange={(e) => setFormData({ ...formData, prompt: e.target.value })}
 											required
 										/>
 									</label>
 								</div>
 
-								<div className={styles.formGroup}>
-								</div>
+								<div className={styles.formGroup}></div>
 
 								<div className={styles.actions}>
 									<button
@@ -98,11 +93,7 @@ export function CategoryEdit() {
 									>
 										Отменить
 									</button>
-									<button
-										type="submit"
-										className={styles.submitButton}
-										disabled={isSubmitting}
-									>
+									<button type="submit" className={styles.submitButton} disabled={isSubmitting}>
 										{isSubmitting ? 'Сохранить...' : 'Сохранить изменения'}
 									</button>
 								</div>

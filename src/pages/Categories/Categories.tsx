@@ -4,6 +4,7 @@ import styles from './Categories.module.css';
 import axios from 'axios';
 import { CategoryCard } from '../../components/CategoryCard/CategoryCard';
 import { ICategory } from '../../types/category.interface';
+import { apiUrl } from '../../main.tsx';
 
 export function Categories() {
 	const [categories, setCategories] = useState<ICategory[]>([]);
@@ -13,7 +14,7 @@ export function Categories() {
 	const getCategories = async () => {
 		setIsLoading(true);
 		try {
-			const { data } = await axios.get<ICategory[]>('http://localhost:3002/api/categories');
+			const { data } = await axios.get<ICategory[]>(`${apiUrl}/api/categories`);
 			setCategories(data);
 		} catch (error) {
 			if (error instanceof Error) {
