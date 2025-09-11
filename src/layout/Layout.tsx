@@ -114,6 +114,22 @@ export function Layout() {
 						YouTube
 					</NavLink>
 
+
+					<NavLink
+						to="/translation"
+						className={({ isActive }) =>
+							cn(styles['link'], {
+								[styles['active']]: isActive,
+							})
+						}
+					>
+						<img
+							src="/free-youtube-icon-123-thumb.png"
+							alt="Иконка каналов пользователя не загружены"
+						/>
+						Translation
+					</NavLink>
+
 					<Button className={cn(styles['last-item'])} appearance={'big'} onClick={logout}>
 						Выход
 					</Button>

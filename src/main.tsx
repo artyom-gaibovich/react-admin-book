@@ -23,6 +23,8 @@ import { UserChannelCreate } from './pages/UserChanneCreate/UserChannelCreate.ts
 import { ICategory } from './types/category.interface.ts';
 import { MyComponent } from './pages/test/MyCompoents.tsx';
 import YouTube from './pages/YouTube/YouTube.tsx';
+import { Upload } from './pages/Upload/Upload.tsx';
+import Translation from './pages/Upload/Translation.tsx';
 export const apiUrl = import.meta.env.VITE_API_URL_BACKEND;
 
 const Menu = lazy(() => import('./pages/Menu/Menu.tsx'));
@@ -75,6 +77,10 @@ const router = createBrowserRouter([
 			{
 				path: '/youtube',
 				element: <YouTube></YouTube>
+			},
+			{
+				path: '/translation',
+				element: <Translation></Translation>
 			},
 			{
 				path: '/test',
