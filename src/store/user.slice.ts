@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { loadState } from './storage.ts';
 import axios from 'axios';
 import { RootState } from './store.ts';
+import { apiUrl } from '../main.tsx';
 
 export const JWT_PERSISTENT_STATE = 'userData';
 
@@ -34,7 +35,8 @@ export const login = createAsyncThunk(
 	(params: { email: string; password: string }) => {
 		const { email, password } = params;
 		return axios
-			.post<{ access: string }>(`http://localhost:3002/api/auth/login`, {
+
+			.post<{ access: string }>(`${apiUrl}/api/auth/login`, {
 				email: email,
 				password: password,
 			})
@@ -50,13 +52,12 @@ export const userProfileNew = createAsyncThunk<IUserProfile, void, { state: Root
 	(_, thunkAPI) => {
 		const jwt = thunkAPI.getState().user.jwt;
 		return axios
-			.get<IUserProfile>(`http://localhost:3002/api/auth/profile`, {
+			.get<IUserProfile>(`${apiUrl}/api/auth/profile`, {
 				headers: {
 					Authorization: `Bearer ${jwt}`,
 				},
 			})
 			.then(({ data }) => {
-				debugger
 				return data;
 			})
 			.catch((err) => {
@@ -70,7 +71,7 @@ export const register = createAsyncThunk(
 	(params: { email: string; password: string; name: string }) => {
 		const { name, password, email } = params;
 		return axios
-			.post<{ access_token: string }>(`http://localhost:3002/api/auth/register`, {
+			.post<{ access_token: string }>(`${apiUrl}/api/auth/register`, {
 				email,
 				password,
 				name,
@@ -111,6 +112,7 @@ export const userSlice = createSlice({
 			}
 			state.jwt = action.payload.access_token;
 		});
+
 		builder.addCase(login.rejected, (state, action) => {
 			state.loginErrorMessage = action.error.message;
 		});
@@ -120,7 +122,6 @@ export const userSlice = createSlice({
 				return;
 			}
 			state.profile = action.payload;
-			debugger
 			state.userProfileLoadingMessage = undefined;
 		});
 		builder.addCase(userProfileNew.rejected, (state, action) => {
@@ -129,7 +130,7 @@ export const userSlice = createSlice({
 			state.jwt = null;
 		});
 
-		builder.addCase(userProfileNew.pending, (state, action) => {
+		builder.addCase(userProfileNew.pending, (state) => {
 			state.userProfileLoadingMessage = 'loading...';
 		});
 

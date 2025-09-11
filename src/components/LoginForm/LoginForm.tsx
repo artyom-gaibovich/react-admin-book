@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useReducer, useRef, useState } from 'react';
+import { FormEvent, useEffect, useReducer, useRef } from 'react';
 import MyInput from '../MyInput/MyInput.tsx';
 import styles from './LoginForm.module.css';
 import cn from 'classnames';
@@ -20,7 +20,7 @@ export type LoginForm = {
 
 export default function LoginForm() {
 	const ref = useRef<HTMLInputElement>(null);
-	const [formState, dispatchForm] = useReducer(formReducer, { ...INITIAL_STATE });
+	const [, dispatchForm] = useReducer(formReducer, { ...INITIAL_STATE });
 	const dispatch = useDispatch<AppDispatch>();
 	const navigate = useNavigate();
 
@@ -29,8 +29,6 @@ export default function LoginForm() {
 	useEffect(() => {
 		if (jwt) navigate('/');
 	}, [jwt, navigate]);
-
-	//const { isValid, isFormReadyToSubmit, values } = formState;
 
 	const sendLogin = (email: string, password: string) => {
 		return dispatch(login({ email, password }));

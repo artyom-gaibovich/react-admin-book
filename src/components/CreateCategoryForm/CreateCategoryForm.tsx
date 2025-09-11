@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import styles from './CreateCategoryForm.module.css';
 import { ICreateCategoryDto } from '../../types/category.interface';
+import { apiUrl } from '../../main.tsx';
 
 export function CreateCategoryForm() {
 	const navigate = useNavigate();
@@ -19,7 +20,7 @@ export function CreateCategoryForm() {
 		setError(null);
 
 		try {
-			await axios.post('http://localhost:3002/api/categories', formData);
+			await axios.post(`${apiUrl}/api/categories`, formData);
 			navigate('/categories');
 		} catch (err) {
 			if (axios.isAxiosError(err)) {

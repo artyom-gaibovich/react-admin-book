@@ -44,7 +44,7 @@ export default function Menu() {
 	const [search, setSearch] = useState<string>('');
 
 	const [isLoading, setIsLoading] = useState<boolean>(false);
-	const [error, setError] = useState<string | undefined>();
+	const [error, ] = useState<string | undefined>();
 
 	useEffect(() => {
 		setIsLoading(true);

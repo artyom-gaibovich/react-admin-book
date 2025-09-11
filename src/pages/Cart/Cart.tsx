@@ -45,7 +45,7 @@ export function Cart() {
 					},
 				},
 			)
-			.then(({ data }) => {
+			.then(() => {
 				dispatch(cartActions.clean());
 				navigate('/success');
 			});
